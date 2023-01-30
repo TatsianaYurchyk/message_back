@@ -2,10 +2,20 @@ import { RequestHandler } from "express";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
 import MailModel from "../models/mail";
+import UserModel from "../models/user";
 import { assertIsDefined } from "../util/assertIsDefined";
 
+export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
+    try {
+        const user = await UserModel.findById(req.session.userId).exec();
+        res.status(200).json(user);
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const getMails: RequestHandler = async (req, res, next) => {
-    const authenticatedUserId = req.session.userId;
+    // const authenticatedUserId = req.session.userId;
     // const authenticatedUserReceiver = req.session.receiver;
 
     try {
@@ -59,10 +69,14 @@ export const createMail: RequestHandler<unknown, unknown, CreateMailBody, unknow
     const authenticatedUserId = req.session.userId;
 
     try {
-        assertIsDefined(authenticatedUserId);
+        // assertIsDefined(authenticatedUserId);
 
         if (!title) {
-            throw createHttpError(400, "Note must have a title");
+            throw createHttpError(400, "Message must have a title");
+        }
+
+        if (!receiver) {
+            throw createHttpError(400, "Message must have a receiver");
         }
 
         const newMail = await MailModel.create({
@@ -71,6 +85,7 @@ export const createMail: RequestHandler<unknown, unknown, CreateMailBody, unknow
             title: title,
             text: text,
         });
+
 
         res.status(201).json(newMail);
     } catch (error) {
