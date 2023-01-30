@@ -5,12 +5,7 @@ const router = express.Router();
 
 router.get("/", MailsController.getMails);
 
-// router.get("/:noteId", MailsController.getMail);
+router.post("/create", MailsController.createMail);
 
-router.post("/", MailsController.createMail);
-
-// router.patch("/:noteId", NotesController.updateNote);
-
-// router.delete("/:noteId", NotesController.deleteNote);
 
 export default router;

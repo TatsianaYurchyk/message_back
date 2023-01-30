@@ -3,7 +3,7 @@ import createHttpError from "http-errors";
 import mongoose from "mongoose";
 import MailModel from "../models/mail";
 import UserModel from "../models/user";
-import { assertIsDefined } from "../util/assertIsDefined";
+// import { assertIsDefined } from "../util/assertIsDefined";
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
     try {
