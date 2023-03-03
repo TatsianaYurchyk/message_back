@@ -29,13 +29,15 @@ interface CreateMailBody {
     title?: string,
     receiver?: string,
     text?: string,
+    userId:string
 }
 
 export const createMail: RequestHandler<unknown, unknown, CreateMailBody, unknown> = async (req, res, next) => {
     const receiver = req.body.receiver;
     const title = req.body.title;
     const text = req.body.text;
-    const authenticatedUserId = req.session.userId;
+    // const authenticatedUserId = req.session.userId;
+    const authenticatedUserId = req.body.userId;
 
     try {
         // assertIsDefined(authenticatedUserId);
